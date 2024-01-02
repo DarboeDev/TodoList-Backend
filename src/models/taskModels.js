@@ -14,7 +14,8 @@ const taskSchema = new Schema({
       
     },
     importance: {
-      type: String,
+      type: Boolean,
+      default: false,
       required: false,
     },
   }

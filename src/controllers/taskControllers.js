@@ -18,7 +18,6 @@ exports.getAllTasks = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-   
     const newTask =  await TaskModel.create({ ...req.body });
     // const savedTask = await newTask.save();
     return res.status(200).json(newTask);
@@ -30,12 +29,11 @@ exports.createTask = async (req, res) => {
 };
 
 exports.updateTask = async (req, res) => {
-    const {id} = req.param;
-    const {title, completed} = req.body;
-
+    const {id} = req.params;
+    const {title, description:{importance, completed}} = req.body;
     try {
       const updatedTask = await TaskModel.findByIdAndUpdate(
-        id, {title, completed}, {new: true}
+        id, {title,description:{ importance, completed}}, {new: true}
       );
       if (!updatedTask) {
         return res.status(404).json({ error: 'Task not found' });
@@ -45,6 +43,7 @@ exports.updateTask = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
 };
+
 exports.deleteTask =  async (req, res) => {
   const {id} = req.params;
 try {
